@@ -22,29 +22,31 @@
 
   <script>
     // Загружаем Nape
-    const napeScript = document.createElement("script");
-    napeScript.src = "assets/box2dweb/nape.min.js";
-    napeScript.onload = () => {
-      console.log("✅ Nape загружен");
+    const loadScript = (src) =>
+      new Promise((resolve, reject) => {
+        const s = document.createElement("script");
+        s.src = src;
+        s.onload = resolve;
+        s.onerror = reject;
+        document.body.appendChild(s);
+      });
 
-      // Загружаем PhaserSuperStorage
-      const pssScript = document.createElement("script");
-      pssScript.src = "assets/box2dweb/phaser-super-storage.min.js";
-      pssScript.onload = () => {
+    async function startGame() {
+      try {
+        await loadScript("assets/box2dweb/nape.min.js");
+        console.log("✅ Nape загружен");
+
+        await loadScript("assets/box2dweb/phaser-super-storage.min.js");
         console.log("✅ PhaserSuperStorage загружен");
 
-        // Загружаем основной игровой скрипт
-        const gameScript = document.createElement("script");
-        gameScript.src = "motox3m4.min.js";
-        gameScript.onload = () => {
-          console.log("✅ Игра загружена");
-          waitForStart();
-        };
-        document.body.appendChild(gameScript);
-      };
-      document.body.appendChild(pssScript);
-    };
-    document.body.appendChild(napeScript);
+        await loadScript("motox3m4.min.js");
+        console.log("✅ Игра загружена");
+
+        waitForStart();
+      } catch (e) {
+        console.error("Ошибка загрузки скриптов:", e);
+      }
+    }
 
     function waitForStart(retries = 100) {
       const interval = setInterval(() => {
@@ -61,6 +63,8 @@
         }
       }, 100);
     }
+
+    startGame();
   </script>
 </body>
 </html>
