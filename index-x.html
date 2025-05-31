@@ -20,41 +20,21 @@
 <body>
   <div id="gameContainer"></div>
 
-  <!-- Динамическая загрузка скриптов -->
+  <!-- Скрипты, в корректном порядке -->
+  <script src="assets/box2dweb/nape.min.js"></script>
+  <script src="assets/box2dweb/phaser-super-storage.min.js"></script>
+  <script src="motox3m4.min.js"></script>
+
   <script>
-    // Загружаем Nape
-    const napeScript = document.createElement("script");
-    napeScript.src = "assets/box2dweb/nape.min.js";
-    napeScript.onload = () => {
-      console.log("✅ Nape загружен");
-
-      // Загружаем основной игровой скрипт
-      const gameScript = document.createElement("script");
-      gameScript.src = "motox3m4.min.js";
-      gameScript.onload = () => {
-        console.log("✅ Игра загружена");
-        waitForStart();
-      };
-      document.body.appendChild(gameScript);
-    };
-    document.body.appendChild(napeScript);
-
-    // Ожидание появления u.start
-    function waitForStart(retries = 100) {
-      const interval = setInterval(() => {
-        if (typeof u !== "undefined" && typeof u.start === "function") {
-          clearInterval(interval);
-          console.log("🚀 Запуск игры");
-          u.start();
-        } else {
-          retries--;
-          if (retries <= 0) {
-            clearInterval(interval);
-            console.error("❌ u.start не найден");
-          }
-        }
-      }, 100);
-    }
+    const waitForStart = setInterval(() => {
+      if (typeof u !== 'undefined' && typeof u.start === 'function') {
+        clearInterval(waitForStart);
+        console.log("\u2705 u.start найден, запускаем");
+        u.start();
+      } else {
+        console.log("\u231b \u0416дем u.start...");
+      }
+    }, 100);
   </script>
 </body>
 </html>
