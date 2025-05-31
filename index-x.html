@@ -21,31 +21,37 @@
   <div id="gameContainer"></div>
 
   <script>
-    function loadGameScript(src, callback) {
-      const script = document.createElement("script");
-      script.src = src;
-      script.onload = callback;
-      script.onerror = () => console.error("Не удалось загрузить:", src);
-      document.body.appendChild(script);
-    }
+    // Загружаем Nape
+    const napeScript = document.createElement("script");
+    napeScript.src = "./nape.min.js"; // Файл должен лежать рядом
+    napeScript.onload = () => {
+      console.log("nape загружен");
 
-    function waitForGameInit(retries = 100) {
+      // Загружаем игру
+      const gameScript = document.createElement("script");
+      gameScript.src = "./motox3m4.min.js";
+      gameScript.onload = () => {
+        console.log("Игра загружена, ждём u.start()");
+        waitForGame();
+      };
+      document.body.appendChild(gameScript);
+    };
+    document.body.appendChild(napeScript);
+
+    function waitForGame(retries = 100) {
       const interval = setInterval(() => {
-        if (typeof u !== 'undefined' && typeof u.start === 'function') {
+        if (typeof u !== "undefined" && typeof u.start === "function") {
           clearInterval(interval);
           u.start();
         } else {
           retries--;
           if (retries <= 0) {
             clearInterval(interval);
-            console.error("u.start так и не появился");
+            console.error("u.start не найден");
           }
         }
-      }, 100); // каждые 100 мс
+      }, 100);
     }
-
-    // загружаем скрипт и ждём появления u.start
-    loadGameScript("./motox3m4.min.js", waitForGameInit);
   </script>
 </body>
 </html>
