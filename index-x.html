@@ -18,38 +18,68 @@
   </style>
 </head>
 <body>
-  <div id="gameContainer"></div>
+  <!-- ВАЖНО: добавляем скрытую кнопку play, которую ожидает JS -->
+  <button id="play" style="display:none;">Play</button>
 
-  <!-- Загрузка всех зависимостей -->
-  <script src="assets/box2dweb/nape.min.js"></script>
-  <script src="assets/box2dweb/jquery-3.1.1.min.js"></script>
-  <script src="assets/box2dweb/easeljs-0.8.2.combined.js"></script>
-  <script src="assets/box2dweb/phaser.min.js"></script>
-  <script src="assets/box2dweb/phaser-cachebuster.min.js"></script>
-  <script src="assets/box2dweb/phaser-super-storage.min.js"></script>
-  <script src="assets/box2dweb/dragonBones.min.js"></script>
-
-  <!-- Загружаем игру -->
-  <script src="motox3m4.min.js"></script>
-
-  <!-- Ожидание полной загрузки -->
   <script>
-    console.log("⏳ Ждём появления u.start...");
+    const scripts = [
+      "assets/box2dweb/nape.min.js",
+      "assets/box2dweb/jquery-3.1.1.min.js",
+      "assets/box2dweb/easeljs-0.8.2.combined.js",
+      "assets/box2dweb/phaser.min.js",
+      "assets/box2dweb/phaser-cachebuster.min.js",
+      "assets/box2dweb/phaser-super-storage.min.js",
+      "assets/box2dweb/dragonBones.min.js"
+    ];
 
-    let retries = 200;
-    const interval = setInterval(() => {
-      if (typeof window.u !== "undefined" && typeof window.u.start === "function") {
-        clearInterval(interval);
-        console.log("🚀 u.start найден, запускаем игру...");
-        window.u.start();
-      } else {
-        retries--;
-        if (retries <= 0) {
-          clearInterval(interval);
-          console.error("❌ u.start так и не найден.");
-        }
+    let index = 0;
+    function loadNextScript() {
+      if (index >= scripts.length) {
+        loadMainScript();
+        return;
       }
-    }, 100);
+      const script = document.createElement("script");
+      script.src = scripts[index];
+      script.onload = () => {
+        console.log(`${scripts[index]} загружен`);
+        index++;
+        loadNextScript();
+      };
+      script.onerror = () => console.error(`❌ Не удалось загрузить ${scripts[index]}`);
+      document.body.appendChild(script);
+    }
+
+    function loadMainScript() {
+      const gameScript = document.createElement("script");
+      gameScript.src = "motox3m4.min.js";
+      gameScript.onload = () => {
+        console.log("✅ Игра загружена");
+        waitForStart();
+      };
+      document.body.appendChild(gameScript);
+    }
+
+    function waitForStart(retries = 100) {
+      const interval = setInterval(() => {
+        if (typeof u !== "undefined" && typeof u.start === "function") {
+          clearInterval(interval);
+          console.log("🚀 u.start найден — запускаем");
+          u.start();
+        } else {
+          console.log("⏳ Ждём появления u.start...");
+          retries--;
+          if (retries <= 0) {
+            clearInterval(interval);
+            console.error("❌ u.start не найден");
+          }
+        }
+      }, 100);
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      console.log("🌐 Страница загружена, начинаем загрузку скриптов...");
+      loadNextScript();
+    });
   </script>
 </body>
 </html>
