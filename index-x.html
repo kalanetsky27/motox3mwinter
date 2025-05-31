@@ -2,52 +2,55 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Moto X3M Winter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    body {
+    html, body {
       margin: 0;
-      background-color: #400080;
+      padding: 0;
+      background: #400080;
       overflow: hidden;
+      height: 100%;
     }
-    #gameContainer {
-      width: 100vw;
-      height: 100vh;
-      background: black;
+    canvas {
+      display: block;
     }
   </style>
 </head>
 <body>
   <div id="gameContainer"></div>
 
+  <!-- Динамическая загрузка скриптов -->
   <script>
     // Загружаем Nape
     const napeScript = document.createElement("script");
-    napeScript.src = "./nape.min.js"; // Файл должен лежать рядом
+    napeScript.src = "assets/box2dweb/nape.min.js";
     napeScript.onload = () => {
-      console.log("nape загружен");
+      console.log("✅ Nape загружен");
 
-      // Загружаем игру
+      // Загружаем основной игровой скрипт
       const gameScript = document.createElement("script");
-      gameScript.src = "./motox3m4.min.js";
+      gameScript.src = "motox3m4.min.js";
       gameScript.onload = () => {
-        console.log("Игра загружена, ждём u.start()");
-        waitForGame();
+        console.log("✅ Игра загружена");
+        waitForStart();
       };
       document.body.appendChild(gameScript);
     };
     document.body.appendChild(napeScript);
 
-    function waitForGame(retries = 100) {
+    // Ожидание появления u.start
+    function waitForStart(retries = 100) {
       const interval = setInterval(() => {
         if (typeof u !== "undefined" && typeof u.start === "function") {
           clearInterval(interval);
+          console.log("🚀 Запуск игры");
           u.start();
         } else {
           retries--;
           if (retries <= 0) {
             clearInterval(interval);
-            console.error("u.start не найден");
+            console.error("❌ u.start не найден");
           }
         }
       }, 100);
