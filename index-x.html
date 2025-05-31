@@ -21,6 +21,87 @@
   <div id="gameContainer"></div>
 
   <script>
+    const scripts = [
+      "assets/box2dweb/nape.min.js",
+      "assets/box2dweb/jquery-3.1.1.min.js",
+      "assets/box2dweb/easeljs-0.8.2.combined.js",
+      "assets/box2dweb/dragonBones.min.js",
+      "assets/box2dweb/phaser.min.js",
+      "assets/box2dweb/phaser-cachebuster.min.js",
+      "assets/box2dweb/phaser-super-storage.min.js",
+      "motox3m4.min.js"
+    ];
+
+    function loadScripts(list, callback) {
+      if (list.length === 0) return callback();
+
+      const src = list.shift();
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = () => {
+        console.log(`✅ ${src} загружен`);
+        loadScripts(list, callback);
+      };
+      script.onerror = () => {
+        console.error(`❌ Ошибка загрузки: ${src}`);
+        loadScripts(list, callback);
+      };
+      document.body.appendChild(script);
+    }
+
+    loadScripts([...scripts], () => {
+      console.log("✅ Все скрипты загружены");
+
+      waitForGameStart();
+    });
+
+    function waitForGameStart(retries = 100) {
+      const interval = setInterval(() => {
+        if (typeof js !== "undefined" && js._Boot) {
+          clearInterval(interval);
+          console.log("🚀 Пытаемся запустить игру через js._Boot()");
+          try {
+            js._Boot();
+          } catch (e) {
+            console.error("❌ Ошибка запуска игры через js._Boot:", e);
+          }
+        } else {
+          retries--;
+          if (retries <= 0) {
+            clearInterval(interval);
+            console.error("❌ js._Boot не найден");
+          } else {
+            console.log("⏳ Ждём появления js._Boot...");
+          }
+        }
+      }, 200);
+    }
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Moto X3M Winter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #400080;
+      overflow: hidden;
+      height: 100%;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div id="gameContainer"></div>
+
+  <script>
     const initialGlobals = new Set(Object.keys(window));
 
     function detectNewGlobals() {
