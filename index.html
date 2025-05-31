@@ -12,22 +12,15 @@
       overflow: hidden;
       height: 100%;
     }
-    canvas {
-      display: block;
-    }
   </style>
 </head>
 <body>
-  <div id="gameContainer"></div>
-
-  <!-- Подключение зависимостей -->
+  <!-- Скрипты -->
   <script src="assets/box2dweb/nape.min.js"></script>
   <script src="assets/box2dweb/phaser-super-storage.min.js"></script>
-
-  <!-- Подключение самой игры -->
   <script src="motox3m4.min.js"></script>
 
-  <!-- Запуск после полной загрузки DOM -->
+  <!-- Запуск игры после загрузки -->
   <script>
     window.addEventListener('load', () => {
       const waitForStart = setInterval(() => {
