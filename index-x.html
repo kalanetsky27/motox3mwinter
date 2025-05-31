@@ -18,72 +18,40 @@
   </style>
 </head>
 <body>
-  <div id="content"></div>
-  <div id="loader"></div>
-  <div id="orientation"></div>
+  <div id="gameContainer"></div>
 
+  <!-- Подключение зависимостей -->
+  <script src="assets/box2dweb/nape.min.js"></script>
+  <script src="assets/box2dweb/jquery-3.1.1.min.js"></script>
+  <script src="assets/box2dweb/easeljs-0.8.2.combined.js"></script>
+  <script src="assets/box2dweb/phaser.min.js"></script>
+  <script src="assets/box2dweb/phaser-cachebuster.min.js"></script>
+  <script src="assets/box2dweb/phaser-super-storage.min.js"></script>
+  <script src="assets/box2dweb/dragonBones.min.js"></script>
+
+  <!-- Основной игровой скрипт -->
+  <script src="motox3m4.min.js"></script>
+
+  <!-- Запуск игры после полной загрузки страницы -->
   <script>
-    // Ждём полной загрузки страницы
-    window.addEventListener("load", () => {
-      const scripts = [
-        "assets/box2dweb/nape.min.js",
-        "assets/box2dweb/jquery-3.1.1.min.js",
-        "assets/box2dweb/easeljs-0.8.2.combined.js",
-        "assets/box2dweb/phaser.min.js",
-        "assets/box2dweb/phaser-cachebuster.min.js",
-        "assets/box2dweb/phaser-super-storage.min.js",
-        "assets/box2dweb/dragonBones.min.js"
-      ];
+    window.addEventListener("load", function () {
+      console.log("🌐 Страница полностью загружена, начинаем ожидание u.start()");
 
-      function loadScriptsSequentially(index = 0, callback) {
-        if (index >= scripts.length) {
-          callback();
-          return;
-        }
-
-        const script = document.createElement("script");
-        script.src = scripts[index];
-        script.onload = () => {
-          console.log(`✅ ${scripts[index]} загружен`);
-          loadScriptsSequentially(index + 1, callback);
-        };
-        script.onerror = () => {
-          console.error(`❌ Ошибка загрузки: ${scripts[index]}`);
-        };
-        document.body.appendChild(script);
-      }
-
-      // Загружаем все библиотеки, затем сам движок
-      loadScriptsSequentially(0, () => {
-        const gameScript = document.createElement("script");
-        gameScript.src = "motox3m4.min.js";
-        gameScript.onload = () => {
-          console.log("✅ motox3m4.min.js загружен");
-          waitForU();
-        };
-        gameScript.onerror = () => {
-          console.error("❌ motox3m4.min.js не загрузился");
-        };
-        document.body.appendChild(gameScript);
-      });
-
-      // Ждём появления u
-      function waitForU(tries = 100) {
-        const interval = setInterval(() => {
-          if (typeof u !== "undefined" && typeof u.start === "function") {
+      let retries = 200;
+      const interval = setInterval(() => {
+        if (typeof u !== 'undefined' && typeof u.start === 'function') {
+          clearInterval(interval);
+          console.log("🚀 u.start найден. Запускаем игру...");
+          u.start();
+        } else {
+          console.log("⏳ Ждём появления u.start...");
+          retries--;
+          if (retries <= 0) {
             clearInterval(interval);
-            console.log("🚀 u.start найден, запускаем");
-            u.start();
-          } else {
-            console.log("⏳ Ждём появления u...");
-            tries--;
-            if (tries <= 0) {
-              clearInterval(interval);
-              console.error("❌ u.start не найден после ожидания");
-            }
+            console.error("❌ u.start не найден даже после ожидания.");
           }
-        }, 100);
-      }
+        }
+      }, 100);
     });
   </script>
 </body>
