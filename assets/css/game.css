@@ -23,44 +23,18 @@ a:focus {
   outline: none;
 }
 
-@font-face {
-    /* font-display: auto; ...trying swap instead... */
-    font-display: swap;
-    font-family: frivFont;
-    src: url(../fonts/frivFont.woff);
-}
 
-@font-face {
-    font-display: swap;
-    font-family: lemonada;
-    src: url(../fonts/lemonada.ttf);
-    line-height: 1.2;
-}
 
-@font-face {
-    font-display: swap;
-    font-family: heebo;
-    src: url(../fonts/heebo.ttf);
-}
 
-@font-face {
-    font-display: swap;
-    font-family: notoSansJA;
-    src: url(../fonts/notoSansJA.ttf);
-}
 
-@font-face {
-    font-display: swap;
-    font-family: notoSansKA;
-    src: url(../fonts/notoSansKA.ttf);
-}
+
+
+
+
+
 
 /*
-@font-face {
-    font-display: swap;
-    font-family: robotoBold;
-    src: url(../fonts/robotoBold.ttf);
-}
+
 */
 
 body {
@@ -68,7 +42,7 @@ body {
     overflow: hidden;
     position: fixed;
     /* prevents iOS bump / overscroll */
-    font-family: frivFont;
+    font-family: Arial, sans-serif;
     font-size: 2em;
     color: #fff;
     background-color: indigo;
@@ -107,7 +81,7 @@ body {
         margin-top: 10vh;
         */
 
-    font-family: sans-serif;
+    font-family: Arial, sans-serif;
 
     width: 100vw;
     font-size: 25vmax;
@@ -642,7 +616,7 @@ body {
 .keyLarge {
     position: relative;
     display: inline-block;
-    font-family: "Lucida Console", Monaco, monospace;
+    font-family: Arial, sans-serif;
     border: 0.5vmin outset #fff;
     box-sizing: border-box;
     font-size: 4vmin;
