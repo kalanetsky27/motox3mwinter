@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Diagnostics - Moto X3M Winter</title>
+  <title>Moto X3M Winter</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     html, body {
@@ -18,67 +18,57 @@
   </style>
 </head>
 <body>
+  <div id="gameContainer"></div>
+
   <script>
-    const initialKeys = Object.keys(window);
-    console.log("🚀 Инициализация. Ключей в window:", initialKeys.length);
+    const initialGlobals = new Set(Object.keys(window));
 
     function detectNewGlobals() {
-      const now = Object.keys(window);
-      const added = now.filter(k => !initialKeys.includes(k));
-      if (added.length) {
-        console.log("🧩 Новые глобальные переменные:", added);
-        for (const key of added) {
-          try {
-            console.log(`🌐 window.${key}:`, window[key]);
-          } catch (e) {
-            console.warn(`❌ Ошибка доступа к window.${key}`);
-          }
-        }
+      const currentGlobals = new Set(Object.keys(window));
+      const newGlobals = [...currentGlobals].filter(k => !initialGlobals.has(k));
+      console.log("🧠 Новые глобальные переменные:", newGlobals);
+      for (const key of newGlobals) {
+        console.log("🌐 window." + key, window[key]);
       }
-    }
-
-    function waitForAnyStart(maxTries = 100) {
-      const possible = ['u', 'game', 'main', 'startGame'];
-      const interval = setInterval(() => {
-        detectNewGlobals();
-
-        for (const name of possible) {
-          const val = window[name];
-          if (val && typeof val.start === 'function') {
-            console.log(`✅ Найден ${name}.start(), запускаем...`);
-            clearInterval(interval);
-            val.start();
-            return;
-          }
-        }
-
-        maxTries--;
-        if (maxTries <= 0) {
-          clearInterval(interval);
-          console.warn("❌ u.start не найден ни у кого.");
-        }
-      }, 300);
     }
   </script>
 
-  <!-- Подключаем все нужные библиотеки -->
+  <!-- Загрузка зависимостей -->
   <script src="assets/box2dweb/nape.min.js"></script>
   <script src="assets/box2dweb/jquery-3.1.1.min.js"></script>
   <script src="assets/box2dweb/easeljs-0.8.2.combined.js"></script>
+  <script src="assets/box2dweb/dragonBones.min.js"></script>
   <script src="assets/box2dweb/phaser.min.js"></script>
   <script src="assets/box2dweb/phaser-cachebuster.min.js"></script>
   <script src="assets/box2dweb/phaser-super-storage.min.js"></script>
-  <script src="assets/box2dweb/dragonBones.min.js"></script>
 
-  <!-- После загрузки зависимостей — загружаем игру -->
+  <!-- Основной скрипт -->
+  <script src="motox3m4.min.js"></script>
+
+  <!-- Ждем объект для запуска -->
   <script>
-    const gameScript = document.createElement("script");
-    gameScript.src = "motox3m4.min.js";
-    gameScript.onload = () => {
-      console.log("✅ motox3m4.min.js загружен");
-      setTimeout(waitForAnyStart, 500); // небольшая пауза на инициализацию
-    };
-    document.body.appendChild(gameScript);
+    console.log("✅ Все скрипты загружены");
+
+    function waitForAnyStart(retries = 80) {
+      if (typeof u !== 'undefined' && typeof u.start === 'function') {
+        console.log("🚀 Найден u.start(), запускаем");
+        u.start();
+        return;
+      }
+      retries--;
+      if (retries <= 0) {
+        console.warn("⏰ u.start так и не появился");
+        detectNewGlobals();
+        return;
+      }
+      console.log("⏳ Ждем появления u.start...");
+      setTimeout(waitForAnyStart, 250);
+    }
+
+    window.addEventListener("load", () => {
+      console.log("📄 Страница полностью загружена, начинаем ожидание u.start()");
+      waitForAnyStart();
+    });
   </script>
 </body>
 </html>
