@@ -1,163 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <script>var legalSites = ["localhost", "127.0.0.1", "github.io"];</script>
-  <script>var legalSites = ["localhost", "127.0.0.1", "github.io"];</script>
-    <meta charset="utf-8">
-    <meta name="robots" content="noindex">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://kalanetsky27.github.io/motox3mwinter/assets/css/app.css" type="text/css">
-    <title>Moto X3M Winter | Friv�</title>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Moto X3M Winter</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #400080;
+      overflow: hidden;
+    }
+    #gameContainer {
+      width: 100vw;
+      height: 100vh;
+      background: black;
+    }
+  </style>
 </head>
-
 <body>
+  <div id="gameContainer"></div>
 
-
-    <script>
-        if (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 0) {
-            Object.defineProperty(navigator, 'userAgent', {
-                get: function() {
-                    return 'Mozilla/5.0 (iPad; CPU OS 12_5_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.2 Mobile/15E148 Safari/604.1 ***SPOOFED***'; //typical of older iPad
-                }
-            });
-        }
-
-    </script>
-
-
-    <div id="content"></div>
-    <div id="orientation"></div>
-    <div id="loader">Loading ...</div>
-    
   <script>
-    var legalSites = ["localhost", "127.0.0.1", "github.io"];
-  </script>
-<script src="https://kalanetsky27.github.io/motox3mwinter/assets/box2dweb/nape.min.js">
-        var nape = "nape.min.js";
-
-    </script>
-
-    <script src="https://kalanetsky27.github.io/motox3mwinter/assets/box2dweb/jquery-3.1.1.min.js"></script>
-    <script src="https://kalanetsky27.github.io/motox3mwinter/assets/box2dweb/easeljs-0.8.2.combined.js"></script>
-    <script src="https://kalanetsky27.github.io/motox3mwinter/assets/box2dweb/phaser.min.js"></script>
-    <script src="https://kalanetsky27.github.io/motox3mwinter/assets/box2dweb/phaser-cachebuster.min.js"></script>
-    <script src="https://kalanetsky27.github.io/motox3mwinter/assets/box2dweb/phaser-super-storage.min.js"></script>
-    <script src="https://kalanetsky27.github.io/motox3mwinter/assets/box2dweb/dragonBones.min.js"></script>
-    <script src="https://kalanetsky27.github.io/motox3mwinter/motox3m4.min.js?b906a42f12402b285994"></script>
-
-<script>
-setTimeout(() => {
-  try {
-    let game = u?.MaxGameCore?.instance;
-    if (game) {
-      game.paused = false;
-      game.drive = true;
-      if (typeof game.startRace === 'function') {
-        game.startRace();
+    // Подключаем основной скрипт динамически
+    const script = document.createElement("script");
+    script.src = "./motox3m4.min.js";
+    script.onload = function () {
+      if (typeof u !== 'undefined' && typeof u.start === 'function') {
+        u.start();
+      } else {
+        console.error("u.start is not defined");
       }
-      console.log("🔓 Game forced to start");
-    }
-  } catch(e) {
-    console.log("🔒 Failed to force start:", e);
-  }
-}, 2000);
-</script>
-
-
-<script>
-  window.addEventListener("load", function () {
-    if (typeof u !== "undefined" && u.start) {
-      u.start();
-    } else {
-      console.error("u is not defined or u.start is missing.");
-    }
-  });
-</script>
-
+    };
+    script.onerror = function () {
+      console.error("Failed to load motox3m4.min.js");
+    };
+    document.body.appendChild(script);
+  </script>
 </body>
-
-<script>
-    
-    //////////////////////////////////////////GPI-v1.00//
-        /////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////
-        // *** IMPORTANT NOTICE! SITELOCK! DO NOT REMOVE! ***
-        // This game may only be made available on the unmodified list of hosts specified below. It is UNLAWFUL for legal entities which have not licensed this game to publicly host it.
-        // Circumventing technological protection measures (TPMs) https://en.wikipedia.org/wiki/Digital_Millennium_Copyright_Act#Anti-circumvention will result in legal action to recover
-        // damages, and DMCA requests to hosts and search engines.
-        // We additionally inform our representative at Google AdSense to request demonetization of offending accounts. This has proved very effective.
-        /////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////
-
-        //gpi1//
-        //gpi2//
-
-        function siteLockGPI() {
-
-            
-
-            let currentLocation = window.location.hostname;
-
-            const sitelockTimeout = setTimeout(disableGame, 999);
-            let canPlay = legalSites.some(site => currentLocation.includes(site));
-
-            if (canPlay) {
-                clearTimeout(sitelockTimeout);
-            }
-
-            function disableGame() {
-                setInterval(function() {
-                    document.write("<div style='position:relative;display:inline-block;padding:0.5vw;margin:0.5vw;border:0.3vw solid red;border-radius:1vw;background:indigo;font-family:sans-serif;font-size:3vw;font-weight:700;'><a style='color:yellow;text-decoration:none;' href='https://" + legalSites[0] + "/'>Play&nbsp;this&nbsp;game&nbsp;at&nbsp;" + legalSites[0] + "!</a></div>     ");
-                }, 500);
-            }
-
-        }
-        
-        siteLockGPI();
-        
-        //gpi3//
-        //gpi4//
-
-        /////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////
-
-        const doResize = true;
-        const focusWindow = true;
-		const timedReloadEnabled = false;
-		const auxSetting = false;
-
-        
-        function resizeGameCanvas() {
-            const canvas = document.querySelector("canvas");
-
-            if (canvas) {
-                canvas.style.maxWidth = "100vw";
-                canvas.style.maxHeight = "100vh";
-            }
-        }
-
-        if (doResize) {
-            const canvasInterval = setInterval(resizeGameCanvas, 1500);
-        }
-
-        if (focusWindow) {
-            window.addEventListener('blur', () => {
-                window.focus();
-            });
-        }
-        
-        //gpi5//
-        //gpi6//
-        
-        /////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////
-
-</script>
-
 </html>
