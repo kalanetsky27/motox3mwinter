@@ -33,26 +33,30 @@
   <script src="motox3m4.min.js"></script>
 
   <!-- Запуск игры после полной загрузки страницы -->
-  <script>
-    window.addEventListener("load", function () {
-      console.log("🌐 Страница полностью загружена, начинаем ожидание u.start()");
-
-      let retries = 200;
-      const interval = setInterval(() => {
-        if (typeof u !== 'undefined' && typeof u.start === 'function') {
-          clearInterval(interval);
-          console.log("🚀 u.start найден. Запускаем игру...");
-          u.start();
-        } else {
-          console.log("⏳ Ждём появления u.start...");
-          retries--;
-          if (retries <= 0) {
-            clearInterval(interval);
-            console.error("❌ u.start не найден даже после ожидания.");
-          }
+<script>
+  function waitForStart(retries = 100) {
+    const interval = setInterval(() => {
+      if (typeof window.u !== "undefined" && typeof window.u.start === "function") {
+        clearInterval(interval);
+        console.log("✅ u.start() найден. Запускаем...");
+        try {
+          window.u.start();
+          console.log("✅ u.start() вызван успешно");
+        } catch (err) {
+          console.error("❌ Ошибка при вызове u.start():", err);
         }
-      }, 100);
-    });
-  </script>
+      } else {
+        retries--;
+        if (retries <= 0) {
+          clearInterval(interval);
+          console.error("❌ u.start() так и не появился");
+        } else {
+          console.log("⏳ Ждём появления u.start()...");
+        }
+      }
+    }, 100);
+  }
+</script>
+
 </body>
 </html>
