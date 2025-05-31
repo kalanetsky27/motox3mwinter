@@ -21,20 +21,31 @@
   <div id="gameContainer"></div>
 
   <script>
-    // Подключаем основной скрипт динамически
-    const script = document.createElement("script");
-    script.src = "./motox3m4.min.js";
-    script.onload = function () {
-      if (typeof u !== 'undefined' && typeof u.start === 'function') {
-        u.start();
-      } else {
-        console.error("u.start is not defined");
-      }
-    };
-    script.onerror = function () {
-      console.error("Failed to load motox3m4.min.js");
-    };
-    document.body.appendChild(script);
+    function loadGameScript(src, callback) {
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = callback;
+      script.onerror = () => console.error("Не удалось загрузить:", src);
+      document.body.appendChild(script);
+    }
+
+    function waitForGameInit(retries = 100) {
+      const interval = setInterval(() => {
+        if (typeof u !== 'undefined' && typeof u.start === 'function') {
+          clearInterval(interval);
+          u.start();
+        } else {
+          retries--;
+          if (retries <= 0) {
+            clearInterval(interval);
+            console.error("u.start так и не появился");
+          }
+        }
+      }, 100); // каждые 100 мс
+    }
+
+    // загружаем скрипт и ждём появления u.start
+    loadGameScript("./motox3m4.min.js", waitForGameInit);
   </script>
 </body>
 </html>
