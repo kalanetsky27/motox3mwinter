@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="robots" content="noindex">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
   <title>Moto X3M Winter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     html, body {
       margin: 0;
@@ -19,11 +18,12 @@
   </style>
 </head>
 <body>
+  <!-- Обязательные элементы -->
   <div id="content"></div>
+  <div id="loader">Loading...</div>
   <div id="orientation"></div>
-  <div id="loader">Loading ...</div>
 
-  <!-- Подключаем скрипты -->
+  <!-- Зависимости -->
   <script src="assets/box2dweb/nape.min.js"></script>
   <script src="assets/box2dweb/jquery-3.1.1.min.js"></script>
   <script src="assets/box2dweb/easeljs-0.8.2.combined.js"></script>
@@ -32,18 +32,18 @@
   <script src="assets/box2dweb/phaser-super-storage.min.js"></script>
   <script src="assets/box2dweb/dragonBones.min.js"></script>
 
-  <!-- Загружаем игру -->
+  <!-- Основной игровой файл -->
   <script src="motox3m4.min.js"></script>
 
-  <!-- Запускаем игру, когда все скрипты загружены -->
+  <!-- Запуск игры -->
   <script>
     const waitForStart = setInterval(() => {
       if (typeof u !== 'undefined' && typeof u.start === 'function') {
         clearInterval(waitForStart);
-        console.log("🚀 u.start найден, запускаем игру");
+        console.log("✅ u.start найден — запускаем игру");
         u.start();
       } else {
-        console.log("⏳ Ожидаем u.start...");
+        console.log("⏳ Ждем u.start...");
       }
     }, 100);
   </script>
