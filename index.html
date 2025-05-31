@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Moto X3M Winter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      overflow: hidden;
+      height: 100%;
+    }
+
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div id="gameContainer"></div>
+
+  <!-- Подключаем физику -->
+  <script src="assets/box2dweb/nape.min.js"></script>
+
+  <!-- Подключаем основной игровой скрипт -->
+  <script src="motox3m4.min.js"></script>
+
+  <!-- Запуск игры, когда всё загружено -->
+  <script>
+    const waitForStart = setInterval(() => {
+      if (typeof u !== 'undefined' && typeof u.start === 'function') {
+        clearInterval(waitForStart);
+        console.log("✅ u.start найден, запускаем");
+        u.start();
+      } else {
+        console.log("⏳ Ждём появления u.start...");
+      }
+    }, 100);
+  </script>
+</body>
+</html>
