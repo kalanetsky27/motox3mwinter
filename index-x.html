@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Moto X3M Winter</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     html, body {
       margin: 0;
@@ -18,56 +19,33 @@
   </style>
 </head>
 <body>
-  <div id="gameContainer"></div>
-  <canvas id="canvas"></canvas>
+  <div id="content"></div>
+  <div id="orientation"></div>
+  <div id="loader">Loading ...</div>
 
+  <!-- Подключаем скрипты -->
+  <script src="assets/box2dweb/nape.min.js"></script>
+  <script src="assets/box2dweb/jquery-3.1.1.min.js"></script>
+  <script src="assets/box2dweb/easeljs-0.8.2.combined.js"></script>
+  <script src="assets/box2dweb/phaser.min.js"></script>
+  <script src="assets/box2dweb/phaser-cachebuster.min.js"></script>
+  <script src="assets/box2dweb/phaser-super-storage.min.js"></script>
+  <script src="assets/box2dweb/dragonBones.min.js"></script>
+
+  <!-- Загружаем игру -->
+  <script src="motox3m4.min.js"></script>
+
+  <!-- Запускаем игру, когда все скрипты загружены -->
   <script>
-    const loadScript = (src) =>
-      new Promise((resolve, reject) => {
-        const s = document.createElement("script");
-        s.src = src;
-        s.onload = resolve;
-        s.onerror = reject;
-        document.body.appendChild(s);
-      });
-
-    async function startGame() {
-      try {
-        await loadScript("assets/box2dweb/nape.min.js");
-        console.log("✅ Nape загружен");
-
-        await loadScript("assets/box2dweb/phaser-super-storage.min.js");
-        console.log("✅ PhaserSuperStorage загружен");
-
-        await loadScript("assets/box2dweb/phaser-cachebuster.min.js");
-        console.log("✅ PhaserCachebuster загружен");
-
-        await loadScript("motox3m4.min.js");
-        console.log("✅ Игра загружена");
-
-        waitForStart();
-      } catch (e) {
-        console.error("Ошибка загрузки скриптов:", e);
+    const waitForStart = setInterval(() => {
+      if (typeof u !== 'undefined' && typeof u.start === 'function') {
+        clearInterval(waitForStart);
+        console.log("🚀 u.start найден, запускаем игру");
+        u.start();
+      } else {
+        console.log("⏳ Ожидаем u.start...");
       }
-    }
-
-    function waitForStart(retries = 100) {
-      const interval = setInterval(() => {
-        if (typeof u !== "undefined" && typeof u.start === "function") {
-          clearInterval(interval);
-          console.log("🚀 Запуск игры");
-          u.start();
-        } else {
-          retries--;
-          if (retries <= 0) {
-            clearInterval(interval);
-            console.error("❌ u.start не найден");
-          }
-        }
-      }, 100);
-    }
-
-    startGame();
+    }, 100);
   </script>
 </body>
 </html>
