@@ -18,9 +18,7 @@
   </style>
 </head>
 <body>
-  <div id="gameContainer"></div>
-  <!-- Фикс: Добавлен скрытый элемент play -->
-  <button id="play" style="display: none;"></button>
+  <div id="game"></div>
 
   <script>
     const scripts = [
@@ -31,47 +29,33 @@
       "assets/box2dweb/phaser-cachebuster.min.js",
       "assets/box2dweb/phaser-super-storage.min.js",
       "assets/box2dweb/dragonBones.min.js",
+      "motox3m4.min.js"
     ];
 
-    let index = 0;
-
-    function loadNextScript(callback) {
+    function loadScripts(index = 0, callback) {
       if (index >= scripts.length) {
-        callback();
-        return;
+        return callback();
       }
       const script = document.createElement("script");
       script.src = scripts[index];
-      script.onload = () => {
-        console.log(`${scripts[index]} загружен`);
-        index++;
-        loadNextScript(callback);
-      };
-      script.onerror = () => {
-        console.error(`❌ Ошибка загрузки: ${scripts[index]}`);
-      };
+      script.onload = () => loadScripts(index + 1, callback);
       document.body.appendChild(script);
     }
 
-    loadNextScript(() => {
-      const gameScript = document.createElement("script");
-      gameScript.src = "motox3m4.min.js";
-      gameScript.onload = () => {
-        console.log("✅ motox3m4.min.js загружен");
-        waitForStart();
-      };
-      document.body.appendChild(gameScript);
+    loadScripts(0, () => {
+      console.log("✅ Все скрипты загружены");
+      waitForStart();
     });
 
     function waitForStart(retries = 100) {
       const interval = setInterval(() => {
         if (typeof u !== "undefined" && typeof u.start === "function") {
           clearInterval(interval);
-          console.log("\uD83D\uDE80 u.start найден, запускаем игру");
+          console.log("🚀 u.start найден — запускаем");
           u.start();
         } else {
-          console.log("⏳ Ждем появления u.start...");
           retries--;
+          console.log("⏳ Ждем появления u.start...");
           if (retries <= 0) {
             clearInterval(interval);
             console.error("❌ u.start не найден");
