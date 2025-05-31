@@ -19,9 +19,9 @@
 </head>
 <body>
   <div id="gameContainer"></div>
+  <canvas id="canvas"></canvas>
 
   <script>
-    // Загружаем Nape
     const loadScript = (src) =>
       new Promise((resolve, reject) => {
         const s = document.createElement("script");
@@ -38,6 +38,9 @@
 
         await loadScript("assets/box2dweb/phaser-super-storage.min.js");
         console.log("✅ PhaserSuperStorage загружен");
+
+        await loadScript("assets/box2dweb/phaser-cachebuster.min.js");
+        console.log("✅ PhaserCachebuster загружен");
 
         await loadScript("motox3m4.min.js");
         console.log("✅ Игра загружена");
